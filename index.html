@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="todo-container">
+    <h1>To‑Do List</h1>
+    <div id="form">
+      <input type="text" id="teks" placeholder="Hey, hey, ada tugas apalagi nich??">
+      <button id="button" type="button">meh, tambah meh</button>
+    </div>
+    <div id="content">
+      <ul id="list">
+        <!-- List items will appear here -->
+      </ul>
+    </div>
+  </div>
+  <script>
+    const teks = document.getElementById("teks");
+    const button = document.getElementById("button");
+    const list = document.getElementById("list");
+
+    button.addEventListener("click", function() {
+      // menyimpan value inputan
+      const teksv = teks.value;
+      // validasi iyea
+      if(teksv !== "") {
+        const li = document.createElement('li');
+        li.textContent = teksv;
+        list.appendChild(li);
+        teks.value = ""; // Clear input field after adding the task
+      } else {
+        alert("WOI JGN KSONK!1!1!1!");
+      }
+    });
+  </script>
+</body>
+</html>
