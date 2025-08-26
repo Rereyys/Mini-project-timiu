@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>To-Do List</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f0f0f0;
+    }
+    .todo-container {
+      width: 400px;
+      margin: 50px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    #form {
+      display: flex;
+      gap: 10px;
+    }
+    input {
+      flex: 1;
+      padding: 8px;
+    }
+    button {
+      padding: 8px 10px;
+      cursor: pointer;
+    }
+    li {
+      margin-top: 10px;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #e0e0e0;
+      padding: 8px;
+      border-radius: 5px;
+    }
+    .btnedit {
+      margin-right: 10px;
+    }
+  </style>
 </head>
 <body>
   <div class="todo-container">
     <h1>To‑Do List</h1>
     <div id="form">
-      <input type="text" id="teks" placeholder="Hey, hey, ada tugas apalagi nich??">
+      <input type="text" id="teks" placeholder="Hey, hey, ada tugas apalagi nich??" />
       <button id="button" type="button">meh, tambah meh</button>
     </div>
     <div id="content">
@@ -19,23 +56,62 @@
       </ul>
     </div>
   </div>
+
   <script>
     const teks = document.getElementById("teks");
     const button = document.getElementById("button");
     const list = document.getElementById("list");
 
-    button.addEventListener("click", function() {
-      // menyimpan value inputan
-      const teksv = teks.value;
-      // validasi iyea
-      if(teksv !== "") {
-        const li = document.createElement('li');
-        li.textContent = teksv;
-        list.appendChild(li);
-        teks.value = ""; // Clear input field after adding the task
-      } else {
+    let itemEdit = null; // untuk menyimpan item yang sedang diedit
+
+    button.addEventListener("click", function () {
+      const teksv = teks.value.trim(); // hapus spasi di awal/akhir
+
+      if (teksv === "") {
         alert("WOI JGN KSONK!1!1!1!");
+        return;
       }
+
+      if (itemEdit) {
+        // Mode edit
+        const span = itemEdit.querySelector("span");
+        span.textContent = teksv;
+        itemEdit = null;
+        button.style.backgroundColor = "";
+        button.style.color = "";
+        button.textContent = "meh, tambah meh";
+      } else {
+        // Mode tambah baru
+        const li = document.createElement("li");
+
+        const spanText = document.createElement("span");
+        spanText.textContent = teksv;
+        li.appendChild(spanText);
+
+        const btnEdit = document.createElement("button");
+        btnEdit.classList.add("btnedit");
+        btnEdit.textContent = "edit dulu nie";
+        btnEdit.addEventListener("click", function () {
+          teks.value = spanText.textContent;
+          button.style.color = "black";
+          button.style.backgroundColor = "yellow";
+          button.textContent = "ey, save dulu";
+          itemEdit = li;
+        });
+
+        const btnDelete = document.createElement("button");
+        btnDelete.textContent = "kok delete? skill issue iyea";
+        btnDelete.addEventListener("click", function () {
+          list.removeChild(li);
+        });
+
+        li.appendChild(btnEdit);
+        li.appendChild(btnDelete);
+
+        list.appendChild(li);
+      }
+
+      teks.value = ""; // kosongkan input
     });
   </script>
 </body>
